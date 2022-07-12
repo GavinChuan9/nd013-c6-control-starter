@@ -37,14 +37,13 @@ void PID::UpdateError(double cte) {
    **/
     double prev_cte = pro_cte;
     if(delta_time == 0.0)
-        diff_cte = std::numeric_limits<double>::infinity();
+        diff_cte = 0.0;
     else
         diff_cte = (cte - prev_cte)/delta_time;
 
     int_cte += cte*delta_time;
-    
+
     pro_cte = cte;
-    
 }
 
 double PID::TotalError() {
@@ -67,4 +66,6 @@ double PID::UpdateDeltaTime(double new_delta_time) {
    * TODO: Update the delta time with new value
    */
     delta_time = new_delta_time;
+
+    return delta_time;
 }
