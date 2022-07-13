@@ -218,8 +218,8 @@ int main ()
   /**
   * TODO (Step 3): create pid (pid_steer) for steer command and initialize values
   **/
-
   PID pid_steer = PID();
+  pid_steer.Init(0.0, 0.0, 0.0, 1.2, -1.2);//The output of the controller should be inside [-1.2, 1.2].
 
   // initialize pid throttle
   /**
@@ -288,8 +288,8 @@ int main ()
           /**
           * TODO (step 3): uncomment these lines
           **/
-//           // Update the delta time with the previous command
-//           pid_steer.UpdateDeltaTime(new_delta_time);
+          // Update the delta time with the previous command
+          pid_steer.UpdateDeltaTime(new_delta_time);
 
           // Compute steer error
           double error_steer;
@@ -299,24 +299,27 @@ int main ()
 
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
+          * The variable y_points and x_points gives the desired trajectory planned by the path_planner.
+          * yaw gives the actual rotational angle of the car.
+          * If needed, the position of the car is stored in the variables x_position, y_position and z_position
           **/
-//           error_steer = 0;
+          error_steer = angle_between_points(x_position, y_position, x_points[0], y_points[0]) - yaw;
 
           /**
           * TODO (step 3): uncomment these lines
           **/
-//           // Compute control to apply
-//           pid_steer.UpdateError(error_steer);
-//           steer_output = pid_steer.TotalError();
+          // Compute control to apply
+          pid_steer.UpdateError(error_steer);
+          steer_output = pid_steer.TotalError();
 
-//           // Save data
-//           file_steer.seekg(std::ios::beg);
-//           for(int j=0; j < i - 1; ++j) {
-//               file_steer.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-//           }
-//           file_steer  << i ;
-//           file_steer  << " " << error_steer;
-//           file_steer  << " " << steer_output << endl;
+          // Save data
+          file_steer.seekg(std::ios::beg);
+          for(int j=0; j < i - 1; ++j) {
+              file_steer.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+          }
+          file_steer  << i ;
+          file_steer  << " " << error_steer;
+          file_steer  << " " << steer_output << endl;
 
           ////////////////////////////////////////
           // Throttle control
