@@ -218,8 +218,8 @@ int main ()
   /**
   * TODO (Step 3): create pid (pid_steer) for steer command and initialize values
   **/
-
   PID pid_steer = PID();
+  pid_steer.Init(0.0, 0.0, 0.0, 1.2, -1.2);//The output of the controller should be inside [-1.2, 1.2].
 
   // initialize pid throttle
   /**
@@ -288,8 +288,8 @@ int main ()
           /**
           * TODO (step 3): uncomment these lines
           **/
-//           // Update the delta time with the previous command
-//           pid_steer.UpdateDeltaTime(new_delta_time);
+          // Update the delta time with the previous command
+          pid_steer.UpdateDeltaTime(new_delta_time);
 
           // Compute steer error
           double error_steer;
@@ -299,24 +299,52 @@ int main ()
 
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
+          * The variable y_points and x_points gives the desired trajectory planned by the path_planner.
+          * yaw gives the actual rotational angle of the car.
+          * If needed, the position of the car is stored in the variables x_position, y_position and z_position
           **/
-//           error_steer = 0;
+
+          // Closest point
+          // vector<double> v_distance;
+          // for(int i=0; i < x_points.size(); ++i)
+          //     v_distance.push_back(hypot(x_points[i]-x_position, y_points[i]-y_position));
+          // int closest_idx = 0;
+          // for(int i=0; i < x_points.size(); ++i)
+          //   if(v_distance[i] < v_distance[closest_idx])
+          //     closest_idx = i;
+
+          // error_steer = angle_between_points(x_position, y_position, x_points[closest_idx], y_points[closest_idx]) - yaw;
+
+          // Furthest point
+          // vector<double> v_distance;
+          // for(int i=0; i < x_points.size(); ++i)
+          //     v_distance.push_back(hypot(x_points[i]-x_position, y_points[i]-y_position));
+          // int furthest_idx = 0;
+          // for(int i=0; i < x_points.size(); ++i)
+          //   if(v_distance[i] > v_distance[furthest_idx])
+          //     furthest_idx = i;
+          // error_steer = angle_between_points(x_position, y_position, x_points[furthest_idx], y_points[furthest_idx]) - yaw;
+
+          // Mean point 
+          double avg_x_points = accumulate(x_points.begin(), x_points.end(), 0.0) / x_points.size();
+          double avg_y_points = accumulate(y_points.begin(), y_points.end(), 0.0) / y_points.size();
+          error_steer = angle_between_points(x_position, y_position, avg_x_points, avg_y_points) - yaw;
 
           /**
           * TODO (step 3): uncomment these lines
           **/
-//           // Compute control to apply
-//           pid_steer.UpdateError(error_steer);
-//           steer_output = pid_steer.TotalError();
+          // Compute control to apply
+          pid_steer.UpdateError(error_steer);
+          steer_output = pid_steer.TotalError();
 
-//           // Save data
-//           file_steer.seekg(std::ios::beg);
-//           for(int j=0; j < i - 1; ++j) {
-//               file_steer.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-//           }
-//           file_steer  << i ;
-//           file_steer  << " " << error_steer;
-//           file_steer  << " " << steer_output << endl;
+          // Save data
+          file_steer.seekg(std::ios::beg);
+          for(int j=0; j < i - 1; ++j) {
+              file_steer.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+          }
+          file_steer  << i ;
+          file_steer  << " " << error_steer;
+          file_steer  << " " << steer_output << endl;
 
           ////////////////////////////////////////
           // Throttle control
