@@ -303,7 +303,16 @@ int main ()
           * yaw gives the actual rotational angle of the car.
           * If needed, the position of the car is stored in the variables x_position, y_position and z_position
           **/
-          error_steer = angle_between_points(x_position, y_position, x_points[0], y_points[0]) - yaw;
+          vector<double> v_distance;
+          for(int i=0; i < x_points.size(); ++i)
+              v_distance.push_back(hypot(x_points[i]-x_position, y_points[i]-y_position));
+
+          int closest_idx = 0;
+          for(int i=0; i < x_points.size(); ++i)
+            if(v_distance[i] < v_distance[closest_idx])
+              closest_idx = i;
+
+          error_steer = angle_between_points(x_position, y_position, x_points[closest_idx], y_points[closest_idx]) - yaw;
 
           /**
           * TODO (step 3): uncomment these lines
