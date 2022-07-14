@@ -303,16 +303,32 @@ int main ()
           * yaw gives the actual rotational angle of the car.
           * If needed, the position of the car is stored in the variables x_position, y_position and z_position
           **/
-          vector<double> v_distance;
-          for(int i=0; i < x_points.size(); ++i)
-              v_distance.push_back(hypot(x_points[i]-x_position, y_points[i]-y_position));
 
-          int closest_idx = 0;
-          for(int i=0; i < x_points.size(); ++i)
-            if(v_distance[i] < v_distance[closest_idx])
-              closest_idx = i;
+          // Closest point
+          // vector<double> v_distance;
+          // for(int i=0; i < x_points.size(); ++i)
+          //     v_distance.push_back(hypot(x_points[i]-x_position, y_points[i]-y_position));
+          // int closest_idx = 0;
+          // for(int i=0; i < x_points.size(); ++i)
+          //   if(v_distance[i] < v_distance[closest_idx])
+          //     closest_idx = i;
 
-          error_steer = angle_between_points(x_position, y_position, x_points[closest_idx], y_points[closest_idx]) - yaw;
+          // error_steer = angle_between_points(x_position, y_position, x_points[closest_idx], y_points[closest_idx]) - yaw;
+
+          // Furthest point
+          // vector<double> v_distance;
+          // for(int i=0; i < x_points.size(); ++i)
+          //     v_distance.push_back(hypot(x_points[i]-x_position, y_points[i]-y_position));
+          // int furthest_idx = 0;
+          // for(int i=0; i < x_points.size(); ++i)
+          //   if(v_distance[i] > v_distance[furthest_idx])
+          //     furthest_idx = i;
+          // error_steer = angle_between_points(x_position, y_position, x_points[furthest_idx], y_points[furthest_idx]) - yaw;
+
+          // Mean point 
+          double avg_x_points = accumulate(x_points.begin(), x_points.end(), 0.0) / x_points.size();
+          double avg_y_points = accumulate(y_points.begin(), y_points.end(), 0.0) / y_points.size();
+          error_steer = angle_between_points(x_position, y_position, avg_x_points, avg_y_points) - yaw;
 
           /**
           * TODO (step 3): uncomment these lines
