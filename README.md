@@ -103,11 +103,32 @@ pip3 install matplotlib
 ```
 
 Answer the following questions:
-- Add the plots to your report and explain them (describe what you see)
+- Add the plots to your report and explain them (describe what you see)<br/>
+![alt text](https://github.com/GavinChuan9/nd013-c6-control-starter/blob/Report/project/img/Steering.png?raw=true)
+![alt text](https://github.com/GavinChuan9/nd013-c6-control-starter/blob/Report/project/img/Throttle.png?raw=true)
+    * Steeting Output very unstable at initial stage, but after a while, it start to stabilize.
+    * Error Throttle is very high, because i keep the car at low speed, i think it will easier to tune PID parameters(steering).
 - What is the effect of the PID according to the plots, how each part of the PID affects the control command?
+    * P control: Let the system react faster. Increase the P value, resulting in faster speed and more steering, so the P value cannot be too large.
+    ```c
+    pid_steer.Init(0.3, 0.0, 0.0, 1.2, -1.2);
+    pid_throttle.Init(0.2, 0.0, 0.0, 1.0, -1.0);
+    ```
+    * PI control: Reduce steady-state error and let system more accurate.
+    ```c
+    pid_steer.Init(0.3, 0.001, 0.0, 1.2, -1.2);
+    pid_throttle.Init(0.2, 0.001, 0.0, 1.0, -1.0);
+    ```
+    * PID control: Improve system stability. Adjust the D value can let ego-vehicle stay in one lane.
+    ```c
+    pid_steer.Init(0.3, 0.001, 1.0, 1.2, -1.2);
+    pid_throttle.Init(0.2, 0.001, 0.01, 1.0, -1.0);
+    ```
 - How would you design a way to automatically tune the PID parameters?
+    * Twiddle algorithm can auto tune the parameters and find out the appropriate values, so may be it is a good choice.
 - PID controller is a model free controller, i.e. it does not use a model of the car. Could you explain the pros and cons of this type of controller?
-- (Optional) What would you do to improve the PID controller?
+    * Pros: Simple logic, easy to implement.
+    * Cons: Difficult to tune parameters to improve performance.
 
 
 ### Tips:
