@@ -103,9 +103,14 @@ pip3 install matplotlib
 ```
 
 Answer the following questions:
+- Build the PID controller object
+    ![alt text](https://github.com/GavinChuan9/nd013-c6-control-starter/blob/Report/project/img/Speed0.png?raw=true)
+    * Complete the TODO in the pid_controller.h and pid_controller.cpp.
+    * Because the PID parameters (pid_steer & pid_throttle) are zero, so the car could not move in the simulation.
 - Add the plots to your report and explain them (describe what you see)<br/>
-![alt text](https://github.com/GavinChuan9/nd013-c6-control-starter/blob/Report/project/img/Steering.png?raw=true)
-![alt text](https://github.com/GavinChuan9/nd013-c6-control-starter/blob/Report/project/img/Throttle.png?raw=true)
+    ![alt text](https://github.com/GavinChuan9/nd013-c6-control-starter/blob/Report/project/img/Steering.png?raw=true)
+    ![alt text](https://github.com/GavinChuan9/nd013-c6-control-starter/blob/Report/project/img/Throttle.png?raw=true)
+    * After i put some appropriate values to PID control (pid_steer & pid_throttle), the simulation results are show as above. ego-vehicle overtake the front 3 car, and no collision.
     * Steeting Output very unstable at initial stage, but after a while, it start to stabilize.
     * Error Throttle is very high, because i keep the car at low speed, i think it will easier to tune PID parameters(steering).
 - What is the effect of the PID according to the plots, how each part of the PID affects the control command?
